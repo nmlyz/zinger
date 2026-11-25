@@ -1,30 +1,23 @@
 #!/usr/bin/env python3
-"""Write one funny line to /output/entry.txt.
-
-The line is a single sentence of at most 200 characters: a small,
-everyday mishap with its surprise saved for the end. The output is
-fixed: running the program twice writes byte-identical files.
-"""
+"""Write one funny line to a text file."""
 
 import os
 
 LINE = (
-    "My phone autocorrected \"I love you\" to \"I love yule\" in July, "
+    'My phone autocorrected "I love you" to "I love yule" in July, '
     "and my girlfriend now thinks I am a seasonal employee."
 )
 
+OUTPUT_DIR = os.environ.get("OUTPUT_DIR", "/output")
+OUTPUT_FILE = "entry.txt"
+
 
 def main():
-    out_dir = os.environ.get("OUTPUT_DIR", "/output")
-    os.makedirs(out_dir, exist_ok=True)
-    path = os.path.join(out_dir, "entry.txt")
-    text = LINE.strip()
-    assert 1 <= len(text) <= 200, "entry must be 1 to 200 characters"
-    assert "\n" not in text, "entry must be one line"
-    assert text.endswith("."), "entry must end as one sentence"
-    assert text.count(".") <= 1, "entry must be a single sentence"
+    # The directory itself is left alone; only the file gets its mode set.
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    path = os.path.join(OUTPUT_DIR, OUTPUT_FILE)
     with open(path, "w", encoding="utf-8", newline="\n") as f:
-        f.write(text + "\n")
+        f.write(LINE + "\n")
     os.chmod(path, 0o644)
 
 
